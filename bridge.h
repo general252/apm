@@ -33,7 +33,6 @@ config.gain_controller2.fixed_digital.gain_db = 4.f;
         float gain_controller2_adaptive_digital_initial_gain_db;// = 15.0f;
         float gain_controller2_adaptive_digital_max_gain_change_db_per_second;// = 6.0f;
         float gain_controller2_adaptive_digital_max_output_noise_level_dbfs;// = -50.0f;
-
         float gain_controller2_fixed_digital_gain_db;// = 0.0f; 固定数字增益（dB）10^(10/20)=3.16 3dB轻微增强 6dB约2倍 10dB明显增强(3.16)
 
         bool high_pass_filter_enabled;//= false; // 高通滤波, 去除：DC 低频震动 风噪 电流声 通常截止：80Hz
@@ -49,41 +48,39 @@ config.gain_controller2.fixed_digital.gain_db = 4.f;
         int8_t noise_suppression_level; // = kModerate;
         bool noise_suppression_analyze_linear_aec_output_when_available;// = false;
 
-        bool transient_suppression_enabled;// = false;
-
     } APMConfig;
 
     // Create an APM instance. Returns NULL on error, sets *err to non-zero.
-    ApmHandle apm_create(APMConfig* param, int* err);
+    ApmHandle apm_create(APMConfig* param, int32_t* err);
 
     // Destroy an APM instance.
     void apm_destroy(ApmHandle h);
 
     // Process a 10ms render (far-end/playback) frame in-place. Returns 0 on success.
-    int apm_process_reverse_stream(ApmHandle h, float* samples, int num_channels);
-    int apm_process_reverse_stream_int16(ApmHandle h, int16_t* samples, int num_channels);
+    int32_t apm_process_reverse_stream(ApmHandle h, float* samples, int32_t num_channels);
+    int32_t apm_process_reverse_stream_int16(ApmHandle h, int16_t* samples, int32_t num_channels);
 
     // Process a 10ms capture frame in-place. Returns 0 on success.
-    int apm_process_stream(ApmHandle h, float* samples, int num_channels);
-    int apm_process_stream_int16(ApmHandle h, int16_t* samples, int num_channels);
+    int32_t apm_process_stream(ApmHandle h, float* samples, int32_t num_channels);
+    int32_t apm_process_stream_int16(ApmHandle h, int16_t* samples, int32_t num_channels);
 
     // Set the stream delay in milliseconds for echo cancellation.
-    void apm_set_stream_delay_ms(ApmHandle h, int delay_ms);
+    void apm_set_stream_delay_ms(ApmHandle h, int32_t delay_ms);
 
     // Get the current stream delay in milliseconds.
-    int apm_stream_delay_ms(ApmHandle h);
+    int32_t apm_stream_delay_ms(ApmHandle h);
 
     // AEC statistics returned by apm_get_stats.
     typedef struct {
-        int    has_erl;
+        int32_t    has_erl;
         double echo_return_loss;          // ERL in dB
-        int    has_erle;
+        int32_t    has_erle;
         double echo_return_loss_enhancement; // ERLE in dB
-        int    has_divergent;
+        int32_t    has_divergent;
         double divergent_filter_fraction;
-        int    has_delay;
-        int    delay_ms;
-        int    has_residual_echo;
+        int32_t    has_delay;
+        int32_t    delay_ms;
+        int32_t    has_residual_echo;
         double residual_echo_likelihood;
     } ApmStats;
 
