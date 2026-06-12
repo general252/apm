@@ -2,6 +2,7 @@
 #define LK_APM_BRIDGE_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
